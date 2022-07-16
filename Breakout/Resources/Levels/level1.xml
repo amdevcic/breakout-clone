@@ -1,0 +1,22 @@
+<Level
+    RowCount="3"
+    ColumnCount="10"
+    RowSpacing="2"
+    ColumnSpacing="2"
+    BackgroundTexture="Resources/background.png">
+    <BrickTypes>
+        <!-- Soft Brick -->
+        <BrickType
+        Id="S"
+        Texture="Resources/block.png"
+        HitPoints="1"
+        HitSound="Resources/Sounds/4368__noisecollector__pongblipc-3.wav"
+        BreakSound="Resources/Sounds/4391__noisecollector__pongblipf-5.wav"
+        BreakScore="50" />
+    </BrickTypes>
+    <Bricks>
+        S S S S S S S S S S
+        S S S S S S S S S S
+        S S S S S S S S S S
+    </Bricks>
+</Level>

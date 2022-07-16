@@ -1,0 +1,45 @@
+<Level
+    RowCount="4"
+    ColumnCount="20"
+    RowSpacing="3"
+    ColumnSpacing="3"
+    BackgroundTexture="Resources/background.png">
+    <BrickTypes>
+        <!-- Soft Brick -->
+        <BrickType
+        Id="S"
+        Texture="Resources/block.png"
+        HitPoints="1"
+        HitSound="Resources/Sounds/4368__noisecollector__pongblipc-3.wav"
+        BreakSound="Resources/Sounds/4391__noisecollector__pongblipf-5.wav"
+        BreakScore="50" />
+        <!-- Medium Brick -->
+        <BrickType
+        Id="M"
+        Texture="Resources/block2.png"    
+        HitPoints="2"
+        HitSound="Resources/Sounds/4368__noisecollector__pongblipc-3.wav"
+        BreakSound="Resources/Sounds/4391__noisecollector__pongblipf-5.wav"
+        BreakScore="100" />
+        <!-- Hard Brick -->
+        <BrickType
+        Id="H"
+        Texture="Resources/block3.png"
+        HitPoints="3"
+        HitSound="Resources/Sounds/4368__noisecollector__pongblipc-3.wav"
+        BreakSound="Resources/Sounds/4391__noisecollector__pongblipf-5.wav"
+        BreakScore="150" />
+        <!-- Impenetrable Brick -->
+        <BrickType
+        Id="I"
+        Texture="Resources/block4.png"
+        HitPoints="Infinite"
+        HitSound="Resources/Sounds/4368__noisecollector__pongblipc-3.wav" />
+    </BrickTypes>
+    <Bricks>
+        H H H H H H H H H H H H H H H H H H H H
+        M M I I M M _ _ M M M M _ _ M M I I M M
+        M M I I M M _ _ M M M M _ _ M M I I M M
+        S S S S S S S S S S S S S S S S S S S S
+    </Bricks>
+</Level>
