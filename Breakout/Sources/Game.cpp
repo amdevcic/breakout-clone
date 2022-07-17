@@ -10,8 +10,7 @@ Game::Game(std::vector<std::string> levelPaths, ALLEGRO_DISPLAY* display) : leve
 	player = new Player();
 	ball = new Ball();
 
-	uiBar = al_load_bitmap("Resources/bar.png");
-	uiFont = al_load_ttf_font("Resources/AGENCYR.ttf", 28, 0);
+	uiFont = al_load_ttf_font(FONT_PATH, 28, 0);
 
 	playerHitSound = al_load_sample(PLAYER_HIT_SOUND);
 	wallHitSound = al_load_sample(WALL_HIT_SOUND);
@@ -39,7 +38,6 @@ void Game::run()
 
 Game::~Game()
 {
-	al_destroy_bitmap(uiBar);
 	al_destroy_font(uiFont);
 
 	al_destroy_sample(playerHitSound);
@@ -53,7 +51,10 @@ void Game::drawAll()
 	currentLevel->drawBricks();
 	player->draw();
 	ball->draw();
-	al_draw_bitmap(uiBar, 0, screenHeight - 48, 0);
+
+	al_draw_filled_rectangle(0, screenHeight - UI_BAR_HEIGHT, screenWidth, screenHeight,
+		al_map_rgba_f(0, 0, 0, UI_TRANSPARENCY));
+
 	al_draw_text(uiFont, al_map_rgb(255, 255, 255), 20, screenHeight - 40, 0, uiText.c_str());
 }
 
@@ -76,7 +77,7 @@ void Game::update()
 		ball->flipX();
 		al_play_sample(wallHitSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 	}
-	if (ball->position.y > screenHeight - ball->height) {
+	if (ball->position.y > screenHeight) {
 		loseLife();
 	}
 
@@ -156,7 +157,14 @@ void Game::runLevel(int levelIndex)
 			break;
 
 		case GameState::LOSE:
-
+			al_draw_filled_rectangle(0, 0, screenWidth, screenHeight,
+				al_map_rgba_f(0, 0, 0, UI_TRANSPARENCY));
+			al_draw_text(uiFont, al_map_rgb_f(1, 1, 1), screenWidth / 2, screenHeight / 2 - 50, ALLEGRO_ALIGN_CENTER,
+				"GAME OVER");
+			al_draw_textf(uiFont, al_map_rgb_f(1, 1, 1), screenWidth / 2, screenHeight / 2, ALLEGRO_ALIGN_CENTER,
+				"Score: %d", score);
+			al_draw_text(uiFont, al_map_rgb_f(1, 1, 1), screenWidth / 2, screenHeight / 2 + 50, ALLEGRO_ALIGN_CENTER,
+				"Press R to restart, Esc to exit");
 			if (al_key_down(&keyState, ALLEGRO_KEY_R)) {
 				this->levelIndex = 0;
 				score = 0;
