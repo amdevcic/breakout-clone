@@ -2,20 +2,21 @@
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
+
 #include "Vector.h"
 
-class Object 
-{
+class Object {
 public:
-	Object();
-	Object(int w, int h);
+	Object(int w = 0, int h = 0);
 	Object(ALLEGRO_BITMAP *sprite, int w, int h);
-	virtual void Update();
-	virtual bool checkCollision(Object* other);
-	void Draw();
-	void setPosition(float x, float y);
+
 	Vector position;
 	int width, height;
+
+	virtual void update() {};
+	virtual bool checkCollision(Object* other);
+	void draw();
+	void setPosition(float x, float y);
 	void setSprite(ALLEGRO_BITMAP* sprite);
 private:
 	ALLEGRO_BITMAP *sprite;

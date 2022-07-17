@@ -1,22 +1,24 @@
 #pragma once
+
 #include <allegro5/allegro_audio.h>
+
 #include "Object.h"
 
 struct BrickType {
 	ALLEGRO_BITMAP* texture;
-	int hitPoints;
+	ALLEGRO_SAMPLE* hitSample, *breakSample;
+	int hitPoints, breakScore;
 	bool indestructible;
-	ALLEGRO_SAMPLE* hitSample;
-	ALLEGRO_SAMPLE* breakSample;
-	int breakScore;
 };
 
 class Brick : public Object {
 public:
-	BrickType* data;
 	Brick(BrickType* data, int x, int y, int w, int h);
-	bool hit();
+	
+	BrickType* data;
 	bool active;
+	
+	bool hit();
 private:
 	int hp;
 };

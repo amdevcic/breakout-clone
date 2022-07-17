@@ -1,30 +1,37 @@
 #include "Ball.h"
 
-Ball::Ball() : Object(BALL_SPRITE_SIZE, BALL_SPRITE_SIZE) {
+Ball::Ball() : Object(BALL_SPRITE_SIZE, BALL_SPRITE_SIZE) 
+{
 	sprite = al_load_bitmap(BALL_SPRITE_PATH);
 	Object::setSprite(sprite);
 	direction = Vector(0.5, -0.5);
-	radius = BALL_SPRITE_SIZE/2;
+	radius = BALL_SPRITE_SIZE / 2;
 }
 
-Ball::~Ball() {
+Ball::~Ball() 
+{
 	al_destroy_bitmap(sprite);
 }
 
-void Ball::Update() {
+void Ball::update() 
+{
 	position = position + direction;
-	if (direction.y < 0.1 && direction.y > -0.1 && direction.x != 0)
+	if (direction.y < 0.1 && direction.y > -0.1 && direction.x != 0) {
 		direction.y = 0.25;
+	}
 }
 
-void Ball::flipX() {
+void Ball::flipX() 
+{
 	direction.x = -direction.x;
 }
 
-void Ball::flipY() {
+void Ball::flipY() 
+{
 	direction.y = -direction.y;
 }
-bool Ball::checkCollision(Object* other, Vector* normal) {
+bool Ball::checkCollision(Object* other, Vector* normal) 
+{
 	Vector center(position + Vector(radius, radius));
 	Vector aabb_half(other->width / 2, other->height / 2);
 	Vector aabb_center(other->position + aabb_half);

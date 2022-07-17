@@ -1,8 +1,7 @@
 #include "Game.h"
 
-Game::Game(Level* level, int levelIndex, ALLEGRO_DISPLAY* display) {
-
-	this->display = display;
+Game::Game(Level* level, int levelIndex, ALLEGRO_DISPLAY* display) : display(display), levelIndex(levelIndex)
+{
 	screenWidth = al_get_display_width(this->display);
 	screenHeight = al_get_display_height(this->display);
 
@@ -12,8 +11,7 @@ Game::Game(Level* level, int levelIndex, ALLEGRO_DISPLAY* display) {
 	ball->setPosition(screenWidth / 2, screenHeight / 2);
 
 	currentLevel = level;
-	this->levelIndex = levelIndex;
-	gameState = BEGIN;
+	gameState = GameState::BEGIN;
 	score = 0;
 	lives = STARTING_LIVES;
 
@@ -26,7 +24,8 @@ Game::Game(Level* level, int levelIndex, ALLEGRO_DISPLAY* display) {
 	uiText = formatUIText();
 }
 
-Game::~Game() {
+Game::~Game()
+{
 	al_destroy_bitmap(uiBar);
 	al_destroy_font(uiFont);
 
@@ -34,22 +33,22 @@ Game::~Game() {
 	al_destroy_sample(wallHitSound);
 }
 
-void Game::drawAll() 
+void Game::drawAll()
 {
 	al_clear_to_color(al_map_rgb(128, 200, 200));
 	currentLevel->drawBackground(screenWidth, screenHeight);
 	currentLevel->drawBricks();
-	player->Draw();
-	ball->Draw();
+	player->draw();
+	ball->draw();
 	al_draw_bitmap(uiBar, 0, screenHeight - 48, 0);
 	al_draw_text(uiFont, al_map_rgb(255, 255, 255), 20, screenHeight - 40, 0, uiText.c_str());
 	al_flip_display();
 }
 
-void Game::update() 
+void Game::update()
 {
-	player->Update();
-	ball->Update();
+	player->update();
+	ball->update();
 
 	Vector collisionNormal;
 
@@ -80,7 +79,7 @@ void Game::update()
 					uiText = formatUIText();
 					currentLevel->bricksRemaining--;
 					if (currentLevel->bricksRemaining <= 0)
-						gameState = EXIT;
+						gameState = GameState::EXIT;
 				}
 				else {
 					al_play_sample(b.data->hitSample, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -90,26 +89,28 @@ void Game::update()
 	}
 }
 
-void Game::run() 
+void Game::run()
 {
-	while (gameState != EXIT) {
+	while (gameState != GameState::EXIT) {
 		drawAll();
 		ALLEGRO_KEYBOARD_STATE keyState;
 		al_get_keyboard_state(&keyState);
-		if (al_key_down(&keyState, ALLEGRO_KEY_ESCAPE))
-			gameState = EXIT;
+		if (al_key_down(&keyState, ALLEGRO_KEY_ESCAPE)) {
+			gameState = GameState::EXIT;
+		}
 		switch (gameState)
 		{
-		case RUNNING:
+		case GameState::RUNNING:
 			update();
 			break;
-		case BEGIN:
-			player->Update();
+		case GameState::BEGIN:
+			player->update();
 			attachBallToPlayer();
-			if (al_key_down(&keyState, ALLEGRO_KEY_SPACE))
+			if (al_key_down(&keyState, ALLEGRO_KEY_SPACE)) {
 				launchBall();
+			}
 			break;
-		case LOSE:
+		case GameState::LOSE:
 			//if (al_key_down(&keyState, ALLEGRO_KEY_SPACE)) {
 			//	player->setPosition(screenWidth / 2 - 64, screenHeight - 90);
 			//	score = 0;
@@ -117,9 +118,9 @@ void Game::run()
 			//	resetBall();
 			//}
 			break;
-		case PAUSE:
+		case GameState::PAUSE:
 			break;
-		case EXIT:
+		case GameState::EXIT:
 			break;
 		default:
 			break;
@@ -127,33 +128,42 @@ void Game::run()
 	}
 }
 
-std::string Game::formatUIText() {
+std::string Game::formatUIText()
+{
 	std::ostringstream uiText;
 	uiText << "Score: " << score << "   Lives: " << lives << "  Level: " << levelIndex;
 	return uiText.str();
 }
 
-void Game::loseLife() {
+void Game::loseLife()
+{
 	lives--;
-	if (lives < 0)
-		gameState = EXIT;
+	if (lives < 0) {
+		gameState = GameState::EXIT;
+	}
 	else {
 		resetBall();
 		uiText = formatUIText();
 	}
 }
 
-void Game::resetBall() {
-	gameState = BEGIN;
+void Game::resetBall()
+{
+	gameState = GameState::BEGIN;
 	ball->direction = Vector();
 }
 
-void Game::launchBall() {
-	gameState = RUNNING;
+void Game::launchBall()
+{
+	gameState = GameState::RUNNING;
 	int xDirection = 1; // TODO: random direction
 	ball->direction = Vector(xDirection, -1).normalized();
 }
 
-void Game::attachBallToPlayer() {
-	ball->setPosition(player->position.x + (player->width - ball->width) / 2, player->position.y - ball->height - 10);
+void Game::attachBallToPlayer()
+{
+	ball->setPosition(
+		player->position.x + (player->width - ball->width) / 2,
+		player->position.y - ball->height - 10
+	);
 }

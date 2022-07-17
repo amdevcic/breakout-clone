@@ -1,65 +1,66 @@
 #include "Level.h"
-#include "tinyxml2.h"
-#include <sstream>
-#include <string>
 
 using namespace tinyxml2;
-Level::Level(const char* levelFilePath, int screenWidth, int screenHeight) {
 
+Level::Level(const char* levelFilePath, int screenWidth, int screenHeight) 
+{
 	loadXml(levelFilePath);
 
-	brickwidth = screenWidth / colcount - colspacing;
-	brickheight = (screenHeight / 3) / rowcount - rowspacing;
+	brickWidth = screenWidth / colCount - colSpacing;
+	brickHeight = (screenHeight / 3) / rowCount - rowSpacing;
 	bricksRemaining = 0;
 
-	for (int i = 0; i < rowcount; i++) {
+	for (int i = 0; i < rowCount; i++) {
 		std::vector<Brick> row;
-		for (int j = 0; j < colcount; j++) {
-			if (brickLayout[i][j] == '_')
+		for (int j = 0; j < colCount; j++) {
+			if (brickLayout[i][j] == '_') {
 				continue;
-			row.push_back(Brick(&(brickTypes.find(brickLayout[i][j])->second), j * (brickwidth + colspacing),
-				i * (brickheight + rowspacing), brickwidth, brickheight));
+			}
+			row.push_back(Brick(&(brickTypes.find(brickLayout[i][j])->second), j * (brickWidth + colSpacing),
+				i * (brickHeight + rowSpacing), brickWidth, brickHeight));
 			bricksRemaining++;
 		}
 		bricks.push_back(row);
 	}
 }
 
-Level::~Level() {
+Level::~Level() 
+{
 	al_destroy_bitmap(background);
 	for (std::pair<char, BrickType> p : brickTypes) {
 		al_destroy_bitmap(p.second.texture);
-		// destroy hit sample
 		al_destroy_sample(p.second.hitSample);
-		// destroy break sample
 		al_destroy_sample(p.second.breakSample);
 	}
 }
 
-void Level::drawBackground(int screenWidth, int screenHeight) {
+void Level::drawBackground(int screenWidth, int screenHeight) 
+{
 	al_draw_scaled_bitmap(background, 0, 0, bgWidth, bgHeight, 0, 0, screenWidth, screenHeight, 0);
 }
 
 
-void Level::drawBricks() {
+void Level::drawBricks() 
+{
 	for (std::vector<Brick> row : bricks) {
 		for (Brick b : row) {
 			if (b.active) {
-				b.Draw();
+				b.draw();
 			}
 		}
 	}
 }
 
-void Level::loadXml(const char* levelFilePath) {
+void Level::loadXml(const char* levelFilePath) 
+{
 	XMLDocument doc;
 	doc.LoadFile(levelFilePath);
 	XMLElement* pLevel = doc.RootElement();
 	if (NULL != pLevel) {
-		pLevel->QueryIntAttribute("RowCount", &rowcount);
-		pLevel->QueryIntAttribute("ColumnCount", &colcount);
-		pLevel->QueryIntAttribute("RowSpacing", &rowspacing);
-		pLevel->QueryIntAttribute("ColumnSpacing", &colspacing);
+		pLevel->QueryIntAttribute("RowCount", &rowCount);
+		pLevel->QueryIntAttribute("ColumnCount", &colCount);
+		pLevel->QueryIntAttribute("RowSpacing", &rowSpacing);
+		pLevel->QueryIntAttribute("ColumnSpacing", &colSpacing);
 
 		background = al_load_bitmap(pLevel->Attribute("BackgroundTexture"));
 		bgWidth = al_get_bitmap_width(background);
@@ -80,16 +81,18 @@ void Level::loadXml(const char* levelFilePath) {
 					pBrickType->QueryIntAttribute("HitPoints", &bt.hitPoints);
 					bt.indestructible = false;
 				}
-				// hit sound
-				if (const char* hitsound = pBrickType->Attribute("HitSound"))
+				if (const char* hitsound = pBrickType->Attribute("HitSound")) {
 					bt.hitSample = al_load_sample(hitsound);
-				else
+				}
+				else {
 					bt.hitSample = al_load_sample(DEFAULT_HIT_SOUND);
-				// break sound
-				if (const char* brsound = pBrickType->Attribute("BreakSound"))
+				}
+				if (const char* brsound = pBrickType->Attribute("BreakSound")) {
 					bt.breakSample = al_load_sample(brsound);
-				else 
+				}
+				else {
 					bt.breakSample = al_load_sample(DEFAULT_HIT_SOUND);
+				}
 
 				pBrickType->QueryIntAttribute("BreakScore", &bt.breakScore);
 
