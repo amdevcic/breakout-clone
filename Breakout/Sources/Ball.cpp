@@ -15,7 +15,7 @@ Ball::~Ball()
 
 void Ball::update() 
 {
-	position = position + direction;
+	position = position + direction * BALL_SPEED;
 	if (direction.y < 0.1 && direction.y > -0.1 && direction.x != 0) {
 		direction.y = 0.25;
 	}

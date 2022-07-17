@@ -91,7 +91,22 @@ void Game::update()
 
 void Game::run()
 {
+	ALLEGRO_TIMER* timer;
+	ALLEGRO_EVENT_QUEUE* event_queue;
+	timer = al_create_timer(1.0f / FRAMES_PER_SECOND);
+	event_queue = al_create_event_queue();
+	al_register_event_source(event_queue, al_get_timer_event_source(timer));
+	al_register_event_source(event_queue, al_get_display_event_source(display));
+	al_start_timer(timer);
+
 	while (gameState != GameState::EXIT) {
+		ALLEGRO_EVENT ev;
+		al_wait_for_event(event_queue, &ev);
+
+		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			gameState = GameState::EXIT;
+		}
+
 		drawAll();
 		ALLEGRO_KEYBOARD_STATE keyState;
 		al_get_keyboard_state(&keyState);

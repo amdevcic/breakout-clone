@@ -7,6 +7,8 @@
 #define BALL_SPRITE_PATH	"Resources/ball2.png"
 #define BALL_SPRITE_SIZE	32
 
+#define BALL_SPEED			4
+
 class Ball : public Object {
 public:
 	Ball();

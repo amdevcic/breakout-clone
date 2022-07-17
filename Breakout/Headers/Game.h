@@ -8,7 +8,8 @@
 #include "Ball.h"
 #include "Level.h"
 
-#define STARTING_LIVES	3
+#define STARTING_LIVES		3
+#define FRAMES_PER_SECOND	120
 
 #define PLAYER_HIT_SOUND    "Resources/Sounds/350862__cabled-mess__blip-c-04.wav"
 #define WALL_HIT_SOUND      "Resources/Sounds/350862__cabled-mess__blip-c-04.wav"
