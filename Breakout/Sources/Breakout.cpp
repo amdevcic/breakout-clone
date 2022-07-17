@@ -43,17 +43,14 @@ int main()
 	al_set_window_title(display, "Breakout");
 	al_set_display_icon(display, icon);
 
-	std::vector<Level*> levels;
+	std::vector<std::string> levelPaths;
 	for (const auto& entry : fs::directory_iterator(LEVELS_PATH)) {
-		levels.push_back(new Level(entry.path().string().c_str(), SCREEN_WIDTH, SCREEN_HEIGHT));
+		levelPaths.push_back(entry.path().string());
 	}
 
-	Game* currentGame;
-	int levelIndex = 1;
-	for (Level* level : levels) {
-		currentGame = new Game(level, levelIndex++, display);
-		currentGame->run();
-	}
+	Game* game;
+	game = new Game(levelPaths, display);
+	game->run();
 
 	al_destroy_display(display);
 	al_destroy_bitmap(icon);

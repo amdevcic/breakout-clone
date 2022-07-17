@@ -17,6 +17,7 @@
 class Level {
 public:
 	Level(const char* levelFilePath, int screenWidth, int screenHeight);
+	Level() = default;
 	~Level();
 
 	std::vector<std::vector<Brick>> bricks;

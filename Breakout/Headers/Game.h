@@ -14,22 +14,23 @@
 #define PLAYER_HIT_SOUND    "Resources/Sounds/350862__cabled-mess__blip-c-04.wav"
 #define WALL_HIT_SOUND      "Resources/Sounds/350862__cabled-mess__blip-c-04.wav"
 
-enum class GameState { RUNNING, BEGIN, LOSE, PAUSE, EXIT };
+enum class GameState { RUNNING, BEGIN, WIN, LOSE, EXIT };
 
 class Game {
 public:
-	Game(Level* level, int levelIndex, ALLEGRO_DISPLAY* display);
+	Game(std::vector<Level*> levels, ALLEGRO_DISPLAY* display);
+	Game(std::vector<std::string> levelPaths, ALLEGRO_DISPLAY* display);
 	~Game();
 
-	void update();
-	void resetBall();
-	void launchBall();
 	void run();
+	void runLevel(int levelIndex);
 private:
 	Player* player;
 	Ball* ball;
 	Level* currentLevel;
 	GameState gameState;
+	std::vector<Level*> levels;
+	std::vector<std::string> levelPaths;
 
 	int score, lives, levelIndex;
 	int screenWidth, screenHeight;
@@ -45,4 +46,8 @@ private:
 	void loseLife();
 	void attachBallToPlayer();
 	void drawAll();
+	void update();
+	void resetBall();
+	void launchBall();
+	bool loadLevel(int levelIndex);
 };
