@@ -13,7 +13,7 @@ Player::~Player()
 
 void Player::move(float d) 
 {
-	position.x = fmin(1080 - width, fmax(position.x + d, 0));
+	position.x += d;
 }
 
 void Player::update() 

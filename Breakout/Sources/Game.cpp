@@ -24,7 +24,7 @@ bool Game::loadLevel(int levelIndex)
 		return false;
 	currentLevel = new Level(levelPaths[levelIndex].c_str(), screenWidth, screenHeight);
 	gameState = GameState::BEGIN;
-	player->setPosition(screenWidth / 2 - 64, screenHeight - 90);
+	player->setPosition((screenWidth - PLAYER_SPRITE_WIDTH) / 2, screenHeight - UI_BAR_HEIGHT - PLAYER_SPRITE_HEIGHT - 10);
 	uiText = formatUIText();
 	return true;
 }
@@ -100,6 +100,8 @@ void Game::update()
 			}
 		}
 	}
+
+	player->position.x = fmin(screenWidth - player->width, fmax(player->position.x, 0));
 }
 
 void Game::runLevel(int levelIndex)
@@ -144,6 +146,7 @@ void Game::runLevel(int levelIndex)
 		case GameState::BEGIN:
 
 			player->update();
+			player->position.x = fmin(screenWidth - player->width, fmax(player->position.x, 0));
 			attachBallToPlayer();
 			if (al_key_down(&keyState, ALLEGRO_KEY_SPACE)) {
 				launchBall();
@@ -218,7 +221,7 @@ void Game::resetBall()
 void Game::launchBall()
 {
 	gameState = GameState::RUNNING;
-	int xDirection = 1; // TODO: random direction
+	int xDirection = rand() % 2 ? 1 : -1;
 	ball->direction = Vector(xDirection, -1).normalized();
 }
 

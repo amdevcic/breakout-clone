@@ -34,6 +34,8 @@ void init()
 	al_install_audio();
 	al_init_acodec_addon();
 	al_reserve_samples(3);
+
+	srand(time(NULL));
 }
 
 int main()
