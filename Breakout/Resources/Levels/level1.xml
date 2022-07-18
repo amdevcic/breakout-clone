@@ -1,5 +1,5 @@
 <Level
-    RowCount="3"
+    RowCount="6"
     ColumnCount="10"
     RowSpacing="2"
     ColumnSpacing="2"
@@ -15,8 +15,11 @@
         BreakScore="50" />
     </BrickTypes>
     <Bricks>
+        _ _ S S S S S S _ _
+        _ S S S S S S S S _
         S S S S S S S S S S
         S S S S S S S S S S
-        S S S S S S S S S S
+        S S _ _ _ _ _ _ S S
+        S _ _ _ _ _ _ _ _ S
     </Bricks>
 </Level>

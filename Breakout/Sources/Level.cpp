@@ -7,7 +7,7 @@ Level::Level(const char* levelFilePath, int screenWidth, int screenHeight)
 	loadXml(levelFilePath);
 
 	brickWidth = screenWidth / colCount - colSpacing;
-	brickHeight = (screenHeight / 3) / rowCount - rowSpacing;
+	brickHeight = (screenHeight / 2) / rowCount - rowSpacing;
 	bricksRemaining = 0;
 
 	for (int i = 0; i < rowCount; i++) {
@@ -16,9 +16,12 @@ Level::Level(const char* levelFilePath, int screenWidth, int screenHeight)
 			if (brickLayout[i][j] == '_') {
 				continue;
 			}
-			row.push_back(Brick(&(brickTypes.find(brickLayout[i][j])->second), j * (brickWidth + colSpacing),
+			BrickType* b = &brickTypes.find(brickLayout[i][j])->second;
+			row.push_back(Brick(b, j * (brickWidth + colSpacing),
 				i * (brickHeight + rowSpacing), brickWidth, brickHeight));
-			bricksRemaining++;
+			if (!b->indestructible) {
+				bricksRemaining++;
+			}
 		}
 		bricks.push_back(row);
 	}

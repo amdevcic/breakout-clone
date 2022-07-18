@@ -1,7 +1,7 @@
 <Level
-    RowCount="3"
+    RowCount="5"
     ColumnCount="12"
-    RowSpacing="16"
+    RowSpacing="3"
     ColumnSpacing="3"
     BackgroundTexture="Resources/background.png">
     <BrickTypes>
@@ -29,8 +29,10 @@
         HitSound="Resources/Sounds/4368__noisecollector__pongblipc-3.wav" />
     </BrickTypes>
     <Bricks>
-        M M M M M M M M M M M M
-        M M _ _ M M M M _ _ M M
-        S S S S S S S S S S S S
+        _ _ _ _ _ S S _ _ _ _ _
+        I M S _ S M M S _ S M I
+        M S _ S M M M M S _ S M
+        S _ S M M S S M M S _ S
+        _ S M M S I I S M M S _
     </Bricks>
 </Level>

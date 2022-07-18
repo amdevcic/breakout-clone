@@ -17,7 +17,12 @@ void Ball::update()
 {
 	position = position + direction * BALL_SPEED;
 	if (direction.y < 0.1 && direction.y > -0.1 && direction.x != 0) {
-		direction.y = 0.25;
+		direction.y *= 5;
+		direction = direction.normalized();
+	}
+	if (direction.x < 0.1 && direction.x > -0.1 && direction.y != 0) {
+		direction.x *= 5;
+		direction = direction.normalized();
 	}
 }
 
