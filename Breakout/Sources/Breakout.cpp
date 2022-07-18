@@ -17,7 +17,7 @@ namespace fs = std::filesystem;
 #define SCREEN_WIDTH 1080
 #define SCREEN_HEIGHT 720
 
-#define ICON_PATH           "Resources/ball2.png"
+#define ICON_PATH           "Resources/ball.png"
 #define LEVELS_PATH         "Resources/Levels/"
 
 #define PLAYER_HIT_SOUND    "Resources/Sounds/350862__cabled-mess__blip-c-04.wav"

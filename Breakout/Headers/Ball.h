@@ -4,7 +4,7 @@
 
 #include "Object.h"
 
-#define BALL_SPRITE_PATH	"Resources/ball2.png"
+#define BALL_SPRITE_PATH	"Resources/ball.png"
 #define BALL_SPRITE_SIZE	32
 
 #define BALL_SPEED			4

@@ -3,7 +3,7 @@
     ColumnCount="12"
     RowSpacing="3"
     ColumnSpacing="3"
-    BackgroundTexture="Resources/background.png">
+    BackgroundTexture="Resources/background2.png">
     <BrickTypes>
         <!-- Soft Brick -->
         <BrickType
@@ -26,7 +26,7 @@
         Id="I"
         Texture="Resources/block4.png"
         HitPoints="Infinite"
-        HitSound="Resources/Sounds/4368__noisecollector__pongblipc-3.wav" />
+        HitSound="Resources/Sounds/350862__cabled-mess__blip-c-04.wav" />
     </BrickTypes>
     <Bricks>
         _ _ _ _ _ S S _ _ _ _ _
