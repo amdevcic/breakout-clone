@@ -37,6 +37,7 @@ void Game::run()
 	levelIndex = 0;
 	while (levelIndex < levelPaths.size() && gameState != GameState::EXIT)
 		runLevel(levelIndex);
+
 }
 
 Game::~Game()
@@ -98,8 +99,13 @@ void Game::update()
 				score += b.data->breakScore;
 				uiText = formatUIText();
 				currentLevel->bricksRemaining--;
-				if (currentLevel->bricksRemaining <= 0)
-					gameState = GameState::WIN;
+				if (currentLevel->bricksRemaining <= 0) {
+					levelIndex++;
+					if (levelIndex >= levelPaths.size())
+						gameState = GameState::WINGAME;
+					else
+						gameState = GameState::WINLEVEL;
+				}
 			}
 			else {
 				al_play_sample(b.data->hitSample, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -159,10 +165,20 @@ void Game::runLevel(int levelIndex)
 			}
 			break;
 
-		case GameState::WIN:
+		case GameState::WINLEVEL:
 
-			this->levelIndex++;
 			running = false;
+			break;
+
+		case GameState::WINGAME:
+			al_draw_filled_rectangle(0, 0, screenWidth, screenHeight,
+				al_map_rgba_f(0, 0, 0, UI_TRANSPARENCY));
+			al_draw_text(uiFont, al_map_rgb_f(1, 1, 1), screenWidth / 2, screenHeight / 2 - 50, ALLEGRO_ALIGN_CENTER,
+				"YOU WIN!");
+			al_draw_textf(uiFont, al_map_rgb_f(1, 1, 1), screenWidth / 2, screenHeight / 2, ALLEGRO_ALIGN_CENTER,
+				"Score: %d", score);
+			al_draw_text(uiFont, al_map_rgb_f(1, 1, 1), screenWidth / 2, screenHeight / 2 + 50, ALLEGRO_ALIGN_CENTER,
+				"Press Esc to exit");
 			break;
 
 		case GameState::LOSE:

@@ -18,7 +18,7 @@
 #define WALL_HIT_SOUND      "Resources/Sounds/350862__cabled-mess__blip-c-04.wav"
 #define FONT_PATH			"Resources/AGENCYR.ttf"
 
-enum class GameState { RUNNING, BEGIN, WIN, LOSE, EXIT };
+enum class GameState { RUNNING, BEGIN, WINLEVEL, LOSE, EXIT, WINGAME };
 
 class Game {
 public:
