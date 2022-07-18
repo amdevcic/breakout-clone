@@ -20,7 +20,7 @@ public:
 	Level() = default;
 	~Level();
 
-	std::vector<std::vector<Brick>> bricks;
+	std::vector<Brick> bricks;
 	int bricksRemaining;
 	
 	void drawBackground(int screenWidth, int screenHeight);

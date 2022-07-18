@@ -56,6 +56,7 @@ int main()
 	game = new Game(levelPaths, display);
 	game->run();
 
+	delete game;
 	al_destroy_display(display);
 	al_destroy_bitmap(icon);
 	al_uninstall_keyboard();

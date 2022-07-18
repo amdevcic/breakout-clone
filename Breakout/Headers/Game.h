@@ -36,7 +36,8 @@ private:
 	std::vector<Level*> levels;
 	std::vector<std::string> levelPaths;
 
-	int score, lives, levelIndex;
+	int score, lives;
+	unsigned int levelIndex;
 	int screenWidth, screenHeight;
 
 	ALLEGRO_DISPLAY* display;
@@ -52,5 +53,5 @@ private:
 	void update();
 	void resetBall();
 	void launchBall();
-	bool loadLevel(int levelIndex);
+	bool loadLevel(unsigned int levelIndex);
 };

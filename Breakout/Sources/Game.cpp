@@ -18,14 +18,17 @@ Game::Game(std::vector<std::string> levelPaths, ALLEGRO_DISPLAY* display) : leve
 	uiText = formatUIText();
 }
 
-bool Game::loadLevel(int levelIndex)
+bool Game::loadLevel(unsigned int levelIndex)
 {
 	if (levelIndex >= levelPaths.size())
 		return false;
+
+	delete currentLevel;
 	currentLevel = new Level(levelPaths[levelIndex].c_str(), screenWidth, screenHeight);
-	gameState = GameState::BEGIN;
+
 	player->setPosition((screenWidth - PLAYER_SPRITE_WIDTH) / 2, screenHeight - UI_BAR_HEIGHT - PLAYER_SPRITE_HEIGHT - 10);
 	uiText = formatUIText();
+	gameState = GameState::BEGIN;
 	return true;
 }
 
@@ -38,6 +41,8 @@ void Game::run()
 
 Game::~Game()
 {
+	delete player, ball, currentLevel;
+
 	al_destroy_font(uiFont);
 
 	al_destroy_sample(playerHitSound);
@@ -81,22 +86,23 @@ void Game::update()
 		loseLife();
 	}
 
-	for (std::vector<Brick>& row : currentLevel->bricks) {
-		for (Brick& b : row) {
-			if (b.active && ball->checkCollision((Object*)&b, &collisionNormal)) {
-				bool broken = b.hit();
-				ball->direction = ball->direction.normalized().mirror(collisionNormal).normalized();
-				if (broken) {
-					al_play_sample(b.data->breakSample, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
-					score += b.data->breakScore;
-					uiText = formatUIText();
-					currentLevel->bricksRemaining--;
-					if (currentLevel->bricksRemaining <= 0)
-						gameState = GameState::WIN;
-				}
-				else {
-					al_play_sample(b.data->hitSample, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
-				}
+	for (Brick& b : currentLevel->bricks) {
+
+		if (b.active && ball->checkCollision((Object*)&b, &collisionNormal)) {
+			
+			bool broken = b.hit();
+			ball->direction = ball->direction.normalized().mirror(collisionNormal).normalized();
+
+			if (broken) {
+				al_play_sample(b.data->breakSample, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+				score += b.data->breakScore;
+				uiText = formatUIText();
+				currentLevel->bricksRemaining--;
+				if (currentLevel->bricksRemaining <= 0)
+					gameState = GameState::WIN;
+			}
+			else {
+				al_play_sample(b.data->hitSample, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 			}
 		}
 	}

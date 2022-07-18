@@ -11,19 +11,17 @@ Level::Level(const char* levelFilePath, int screenWidth, int screenHeight)
 	bricksRemaining = 0;
 
 	for (int i = 0; i < rowCount; i++) {
-		std::vector<Brick> row;
 		for (int j = 0; j < colCount; j++) {
 			if (brickLayout[i][j] == '_') {
 				continue;
 			}
 			BrickType* b = &brickTypes.find(brickLayout[i][j])->second;
-			row.push_back(Brick(b, j * (brickWidth + colSpacing),
+			bricks.push_back(Brick(b, j * (brickWidth + colSpacing),
 				i * (brickHeight + rowSpacing), brickWidth, brickHeight));
 			if (!b->indestructible) {
 				bricksRemaining++;
 			}
 		}
-		bricks.push_back(row);
 	}
 }
 
@@ -45,11 +43,9 @@ void Level::drawBackground(int screenWidth, int screenHeight)
 
 void Level::drawBricks() 
 {
-	for (std::vector<Brick> row : bricks) {
-		for (Brick b : row) {
-			if (b.active) {
-				b.draw();
-			}
+	for (Brick b : bricks) {
+		if (b.active) {
+			b.draw();
 		}
 	}
 }
